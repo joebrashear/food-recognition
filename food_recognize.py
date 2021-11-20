@@ -13,7 +13,7 @@ from google.cloud import vision_v1p3beta1 as vision
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'client_key.json'
 
 # Source path content all images
-SOURCE_PATH = "E:/temp_uploads/Photos/Fruit/"
+SOURCE_PATH = "C:/Fruits/"
 
 FOOD_TYPE = 'Fruit'  # 'Vegetable'
 
