@@ -1,0 +1,7 @@
+Fruit: clementine
+Serving Size: 74.0 servings
+Calories: 47.0 kcal
+Carbs: 12.02 grams
+Protein: 0.85 grams
+Fat: 0.15 grams
+Fiber: 1.7 grams

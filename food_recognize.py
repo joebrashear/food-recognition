@@ -62,6 +62,8 @@ def recognize_food(img_path, list_foods):
     response = client.label_detection(image=image)
     labels = response.label_annotations
 
+    file = open("output.txt","r+")
+
     for label in labels:
         # if len(text.description) == 10:
         desc = label.description.lower()
@@ -70,42 +72,62 @@ def recognize_food(img_path, list_foods):
         if (desc in list_foods):
             # score = round(label.score, 3)
             # print(desc, 'score: ', score)
-
-            # Put text license plate number to image
+            # put name of fruit
+            # enerkcal - calories
+            # Procnt - protein
+            # chocdf - carbs
+            # FAt - fat
+            # FIBTG - fiber
+            # add serving size too
             nutrition = requests.get("https://api.edamam.com/api/food-database/v2/parser?app_id=%s&app_key=%s&ingr=%s&nutrition-type=logging" %(APP_ID, APP_KEY, desc))
             print("status code", nutrition.status_code)
             nutrition_json = nutrition.json()
+            # measure and weight
+            print(str(nutrition_json))
             if nutrition.status_code == 200:
-                cv2.putText(img, str(nutrition_json["parsed"][0]["food"]["nutrients"]), (300, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (50, 50, 200), 2)
-                cv2.imshow('Recognize & Draw', img)
-                cv2.waitKey(0)
+                fruit = nutrition_json["text"]
+                calories = nutrition_json["parsed"][0]["food"]["nutrients"]["ENERC_KCAL"]
+                protein = nutrition_json["parsed"][0]["food"]["nutrients"]["PROCNT"]
+                fat = nutrition_json["parsed"][0]["food"]["nutrients"]["FAT"]
+                carbs = nutrition_json["parsed"][0]["food"]["nutrients"]["CHOCDF"]
+                fiber = nutrition_json["parsed"][0]["food"]["nutrients"]["FIBTG"]
+                serving_size = nutrition_json["parsed"][0]["measure"]["weight"]
+                unit = nutrition_json["parsed"][0]["measure"]["label"]
 
-            # Get first fruit only
-            break
+                str1 = "Fruit: " + str(fruit)
+                str2 = "Serving Size: " + str(serving_size) + " " + unit.lower() + "s"
+                str3 = "Calories: " + str(calories) + " kcal"
+                str4 = "Carbs: " + str(carbs) + " grams"
+                str5 = "Protein: " + str(protein) + " grams"
+                str6 = "Fat: " + str(fat) + " grams"
+                str7 = "Fiber: " + str(fiber) + " grams"
+                for L in [str1, str2, str3, str4, str5, str6, str7]:
+                    file.writelines(L)
+                    file.write("\n")
+                print(file.read())
+
+                cv2.waitKey(0)
+            print('Total time: {}'.format(datetime.now() - start_time))
+            return True
 
     print('Total time: {}'.format(datetime.now() - start_time))
+    return False
 
-cap = cv2.VideoCapture(0)
-
+import cv2
+cap = cv2.VideoCapture()
+# The device number might be 0 or 1 depending on the device and the webcam
+cap.open(0, cv2.CAP_DSHOW)
 while(True):
-    # Capture frame-by-frame
     ret, frame = cap.read()
+    cv2.imshow('frame', frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
     file = 'live.png'
     cv2.imwrite( file,frame)
-    print('---------- Start FOOD Recognition --------')
     list_foods = load_food_name(FOOD_TYPE)
-    print(list_foods)
-    recognize_food(file, list_foods)
+    find_fruit = recognize_food(file, list_foods)
     # Display the resulting frame
-    cv2.imshow('frame',frame)
-    print('---------- End ----------')
-
-# When everything done, release the capture
+    if (find_fruit):
+        break
 cap.release()
 cv2.destroyAllWindows()
-print('---------- Start FOOD Recognition --------')
-list_foods = load_food_name(FOOD_TYPE)
-print(list_foods)
-path = SOURCE_PATH + '1.jpg'
-recognize_food(path, list_foods)
-print('---------- End ----------')
