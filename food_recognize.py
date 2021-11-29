@@ -8,12 +8,10 @@ from datetime import datetime
 import requests
 import cv2
 from google.cloud import vision_v1p3beta1 as vision
+import webbrowser
 
 # Setup google authen client key
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'client_key.json'
-
-# Source path content all images
-SOURCE_PATH = "C:/Fruits/"
 
 FOOD_TYPE = 'Fruit'  # 'Vegetable'
 
@@ -80,7 +78,6 @@ def recognize_food(img_path, list_foods):
             # FIBTG - fiber
             # add serving size too
             nutrition = requests.get("https://api.edamam.com/api/food-database/v2/parser?app_id=%s&app_key=%s&ingr=%s&nutrition-type=logging" %(APP_ID, APP_KEY, desc))
-            print("status code", nutrition.status_code)
             nutrition_json = nutrition.json()
             # measure and weight
             print(str(nutrition_json))
@@ -92,10 +89,9 @@ def recognize_food(img_path, list_foods):
                 carbs = nutrition_json["parsed"][0]["food"]["nutrients"]["CHOCDF"]
                 fiber = nutrition_json["parsed"][0]["food"]["nutrients"]["FIBTG"]
                 serving_size = nutrition_json["parsed"][0]["measure"]["weight"]
-                unit = nutrition_json["parsed"][0]["measure"]["label"]
 
                 str1 = "Fruit: " + str(fruit)
-                str2 = "Serving Size: " + str(serving_size) + " " + unit.lower() + "s"
+                str2 = "Serving Size: " + str(serving_size) + " " + "grams"
                 str3 = "Calories: " + str(calories) + " kcal"
                 str4 = "Carbs: " + str(carbs) + " grams"
                 str5 = "Protein: " + str(protein) + " grams"
@@ -104,11 +100,11 @@ def recognize_food(img_path, list_foods):
                 for L in [str1, str2, str3, str4, str5, str6, str7]:
                     file.writelines(L)
                     file.write("\n")
-                print(file.read())
+                webbrowser.open("output.txt")
 
-                cv2.waitKey(0)
-            print('Total time: {}'.format(datetime.now() - start_time))
-            return True
+                #cv2.waitKey(0)
+                print('Total time: {}'.format(datetime.now() - start_time))
+                return True
 
     print('Total time: {}'.format(datetime.now() - start_time))
     return False
