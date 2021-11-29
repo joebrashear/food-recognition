@@ -1,7 +1,8 @@
-Fruit: banana
-Serving Size: 126.0 grams
-Calories: 89.0 kcal
-Carbs: 22.84 grams
-Protein: 1.09 grams
-Fat: 0.33 grams
-Fiber: 2.6 grams
+Food: apple
+Serving Size: 242.0 grams
+Calories: 52.0 kcal
+Carbs: 13.81 grams
+Protein: 0.26 grams
+Fat: 0.17 grams
+Fiber: 2.4 grams
+

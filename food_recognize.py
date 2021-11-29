@@ -1,5 +1,5 @@
 """
-Recognize food: fruit, vegetable
+Recognize food: fruit, vegetable, grain, meat
 """
 
 import io
@@ -13,7 +13,7 @@ import webbrowser
 # Setup google authen client key
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'client_key.json'
 
-FOOD_TYPE = 'Fruit'  # 'Vegetable'
+FOOD_TYPE = 'Food'  # 'Vegetable'
 
 APP_ID = "f42907f5"
 APP_KEY = "c2b17669b4b9b1eff72c964c28c0d4b1"
@@ -22,7 +22,7 @@ APP_KEY = "c2b17669b4b9b1eff72c964c28c0d4b1"
 def load_food_name(food_type):
     """
     Load all known food type name.
-    :param food_type: Fruit or Vegetable
+    :param food_type: Fruit, Vegetable, Grain, Meat
     :return:
     """
     names = [line.rstrip('\n').lower() for line in open('dict/' + food_type + '.dict')]
@@ -70,7 +70,7 @@ def recognize_food(img_path, list_foods):
         if (desc in list_foods):
             # score = round(label.score, 3)
             # print(desc, 'score: ', score)
-            # put name of fruit
+            # put name of food
             # enerkcal - calories
             # Procnt - protein
             # chocdf - carbs
@@ -82,7 +82,7 @@ def recognize_food(img_path, list_foods):
             # measure and weight
             print(str(nutrition_json))
             if nutrition.status_code == 200:
-                fruit = nutrition_json["text"]
+                food = nutrition_json["text"]
                 calories = nutrition_json["parsed"][0]["food"]["nutrients"]["ENERC_KCAL"]
                 protein = nutrition_json["parsed"][0]["food"]["nutrients"]["PROCNT"]
                 fat = nutrition_json["parsed"][0]["food"]["nutrients"]["FAT"]
@@ -90,7 +90,7 @@ def recognize_food(img_path, list_foods):
                 fiber = nutrition_json["parsed"][0]["food"]["nutrients"]["FIBTG"]
                 serving_size = nutrition_json["parsed"][0]["measure"]["weight"]
 
-                str1 = "Fruit: " + str(fruit)
+                str1 = "Food: " + str(food)
                 str2 = "Serving Size: " + str(serving_size) + " " + "grams"
                 str3 = "Calories: " + str(calories) + " kcal"
                 str4 = "Carbs: " + str(carbs) + " grams"
@@ -104,8 +104,9 @@ def recognize_food(img_path, list_foods):
 
                 #cv2.waitKey(0)
                 print('Total time: {}'.format(datetime.now() - start_time))
-                return True
-
+            else:
+                print("Error: Food not present in Database")
+            return True
     print('Total time: {}'.format(datetime.now() - start_time))
     return False
 
@@ -121,9 +122,9 @@ while(True):
     file = 'live.png'
     cv2.imwrite( file,frame)
     list_foods = load_food_name(FOOD_TYPE)
-    find_fruit = recognize_food(file, list_foods)
+    find_food = recognize_food(file, list_foods)
     # Display the resulting frame
-    if (find_fruit):
+    if (find_food):
         break
 cap.release()
 cv2.destroyAllWindows()
