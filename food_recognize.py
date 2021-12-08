@@ -114,6 +114,7 @@ import cv2
 cap = cv2.VideoCapture()
 # The device number might be 0 or 1 depending on the device and the webcam
 cap.open(0, cv2.CAP_DSHOW)
+list_foods = load_food_name(FOOD_TYPE)
 while(True):
     ret, frame = cap.read()
     cv2.imshow('frame', frame)
@@ -121,7 +122,6 @@ while(True):
         break
     file = 'live.png'
     cv2.imwrite( file,frame)
-    list_foods = load_food_name(FOOD_TYPE)
     find_food = recognize_food(file, list_foods)
     # Display the resulting frame
     if (find_food):

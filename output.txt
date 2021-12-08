@@ -1,8 +1,12 @@
-Food: apple
-Serving Size: 242.0 grams
-Calories: 52.0 kcal
-Carbs: 13.81 grams
-Protein: 0.26 grams
-Fat: 0.17 grams
-Fiber: 2.4 grams
+Food: peach
+Serving Size: 147.0 grams
+Calories: 39.0 kcal
+Carbs: 9.54 grams
+Protein: 0.91 grams
+Fat: 0.25 grams
+Fiber: 1.5 grams
+s
 
+96481212 grams
+Fat: 6.535449434006678 grams
+Fiber: 1.3580049088528279 grams
