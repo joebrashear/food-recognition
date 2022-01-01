@@ -1,5 +1,7 @@
 # food-recocgniztion
-Recognize food with Python, Google vision, OpenCV
+Recognize food and find out its nutrition facts with Python, Google vision, OpenCV, and Edamam API
+
+Youtube video demonstration: https://www.youtube.com/watch?v=9K8QS0Y2IM0
 
 # Requirements:
 - Python 3
